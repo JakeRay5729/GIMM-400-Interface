@@ -18,10 +18,10 @@ public abstract class Contender : IAttackAI, IProjectile
     public float shotTime { get; set; }
     public float _projSpeed { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    public abstract void Attack(GameObject proj);
-    public bool CheckValue()
+    public abstract void Attack(GameObject proj); //shoots out projectile
+    public bool CheckValue() //checks to see if ratio's work
     {
-        if (_health < 10 || _health > 90)
+        if (_health <= .1 || _health >= 1)
         {
             Debug.LogException(new System.Exception("Health needs to be in between 10 and 90"));
             return false;
@@ -30,7 +30,7 @@ public abstract class Contender : IAttackAI, IProjectile
             Debug.LogException(new System.Exception("Review your health ratio(Health = Vision / Speed)"));
             return false;
         }
-        if (_damage < 2 || _damage > 10)
+        if (_damage < .1 || _damage > 1)
         {
             Debug.LogException(new System.Exception("Health needs to be in between 2 and 10"));
             return false; 
@@ -45,39 +45,36 @@ public abstract class Contender : IAttackAI, IProjectile
             Debug.LogException(new System.Exception("Fire Rate needs to be between .1 and 1"));
             return false;
         }
-        
+        _health *= HEALTHMULTIPLIER;
+        _damage *= STANDARDMULTIPLIER;
+        _Speed *= STANDARDMULTIPLIER;
+        _fireRate = 1 / (STANDARDMULTIPLIER * _fireRate);
+        _Vision = _arenaRadius / (1 / _Vision);
+        _AttackRange *= STANDARDMULTIPLIER;
         return true;
-
+        
     }
-    public abstract void DealDamage();
-    public bool DeathCheck()
+    public abstract void DealDamage(); //projectile applies damage on collision
+    public bool DeathCheck() //boolean to check if you are dead
     {
         if (_health <= 0) return true;
         else return false;
     }
-    public abstract void Die();
-    public abstract void Move();
-    public abstract bool shotConnected();
-    public void TakeDamage(float amt)
+    public abstract void Die(); //way to kill AI
+    public abstract void Move(); //move your AI, recommended to use vision and attack range to determine
+    public void TakeDamage(float amt) //takes the damage from the projectile
     {
         _health -= amt;
         if(DeathCheck()) Die();
     }
-    public abstract void shoot(Vector3 projDirection);
+    public abstract void shoot(Vector3 projDirection); 
     /// <summary>
+    /// Shoots the projectile
     /// Groups should calculate this based on time.deltatime and the timeShot variable based on fire rate
     /// </summary>
-    public abstract void inheritDamage();
+    public abstract void inheritDamage(); //let the projectile inherit the ai's damage
 
     public abstract void calculateSpeed();
 
-    public void shoot()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public bool CanShoot()
-    {
-        throw new System.NotImplementedException();
-    }
+    public bool CanShoot(); //fire rate should be calculated as FireRate = 1/_fireRate
 }
