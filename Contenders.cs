@@ -21,7 +21,7 @@ public abstract class Contender : IAttackAI, IProjectile
     public abstract void Attack(GameObject proj); //shoots out projectile
     public bool CheckValue() //checks to see if ratio's work
     {
-        if (_health <= .1 || _health >= 1)
+        if (_health >= .1 || _health <= 1)
         {
             Debug.LogException(new System.Exception("Health needs to be in between 10 and 90"));
             return false;
@@ -30,7 +30,7 @@ public abstract class Contender : IAttackAI, IProjectile
             Debug.LogException(new System.Exception("Review your health ratio(Health = Vision / Speed)"));
             return false;
         }
-        if (_damage < .1 || _damage > 1)
+        if (_damage >= .1 || _damage <= 1)
         {
             Debug.LogException(new System.Exception("Health needs to be in between 2 and 10"));
             return false; 
@@ -40,7 +40,12 @@ public abstract class Contender : IAttackAI, IProjectile
             Debug.LogException(new System.Exception("Review your damage ratio (Damage = Attack Range/ Fire Rate)"));
             return false;
         }
-        if (_fireRate < .1 || _fireRate > 1)
+        if (_fireRate <= .1 || _fireRate >= 1)
+        {
+            Debug.LogException(new System.Exception("Fire Rate needs to be between .1 and 1"));
+            return false;
+        }
+        if (_Speed <= .1 || _Speed >= 1)
         {
             Debug.LogException(new System.Exception("Fire Rate needs to be between .1 and 1"));
             return false;
