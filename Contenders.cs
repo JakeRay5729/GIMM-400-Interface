@@ -47,7 +47,7 @@ public abstract class Contender : IAttackAI, IProjectile
         }
         if (_Speed <= .1 || _Speed >= 1)
         {
-            Debug.LogException(new System.Exception("Fire Rate needs to be between .1 and 1"));
+            Debug.LogException(new System.Exception("Speed needs to be between .1 and 1"));
             return false;
         }
         _health *= HEALTHMULTIPLIER;
